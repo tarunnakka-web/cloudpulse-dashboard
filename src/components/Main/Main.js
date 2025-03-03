@@ -107,7 +107,7 @@ export default function Main() {
         {/* <Divider /> */}
 
         {/* Sidebar Menu Items */}
-        <List sx={{ backgroundColor: "white"}}>
+        <List sx={{ backgroundColor: "white", m:1}}>
       {menuItems.map(({ text, path, icon }) => (
         <ListItem
           disableGutters
@@ -116,7 +116,7 @@ export default function Main() {
           to={path}
           onClick={() => setOptionSelected(path)} // Update selected item
           sx={{
-            mb:1,
+            mb:0.5,
             pl:2,
             pr:2,
             color: isOptionSelected === path ? "#006a4d" : "black", // Selected item color
