@@ -166,7 +166,7 @@ const GreenSwitch = () => {
                   </TableHead>
                   <TableBody>
                     {resources[project].map((resource) => (
-                      <TableRow key={resource.id}>
+                      <TableRow key={resource.id} sx={{backgroundColor:"#dee0df"}}>
                         <TableCell sx={{ textAlign: 'left' }}>{resource.name}</TableCell>
                         <TableCell sx={{ textAlign: 'left' }}>{resource.type}</TableCell>
                         <TableCell sx={{ textAlign: 'center' }}>{resource.status}</TableCell>

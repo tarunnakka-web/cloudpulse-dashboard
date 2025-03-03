@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Container, CircularProgress, Alert, Button , Box } from "@mui/material";
 import InfoCard from "../InfoCard/InfoCard";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  Work as WorkIcon,
   AttachMoney as AttachMoneyIcon,
   TrendingUp as TrendingUpIcon,
   Upgrade as UpgradeIcon,
   ToggleOnSharp as ToggleOnSharpIcon,
-  Padding
 } from "@mui/icons-material";
 
 import { emphasize, styled } from '@mui/material/styles';
@@ -33,7 +31,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [selectedBreadcrumb, setSelectedBreadcrumb] = useState();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   // Function to fetch dashboard data from API
   const fetchData = async () => {

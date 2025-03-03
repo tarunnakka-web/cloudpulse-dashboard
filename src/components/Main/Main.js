@@ -107,7 +107,7 @@ export default function Main() {
         {/* <Divider /> */}
 
         {/* Sidebar Menu Items */}
-        <List sx={{ backgroundColor: "white", m:1}}>
+        <List sx={{ backgroundColor: "white", m:1, borderRadius:3}}>
       {menuItems.map(({ text, path, icon }) => (
         <ListItem
           disableGutters

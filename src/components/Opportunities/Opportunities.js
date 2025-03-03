@@ -146,7 +146,7 @@ const Opportunities = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
+                  <TableRow sx={{backgroundColor:"#dee0df"}}>
                     <TableCell>{resource.type}</TableCell>
                     <TableCell>{resource.issue}</TableCell>
                     <TableCell>{resource.action}</TableCell>
@@ -160,6 +160,17 @@ const Opportunities = () => {
                         placeholder="Add comment" 
                         value={inputComments[resource.id] || ""}
                         onChange={(e) => handleInputChange(e, resource.id)}
+                       sx={{'& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: '#006a4d',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#006a4d',
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: '#006a4d',
+            },}}
                       />
                       <Button 
                         variant="outlined" 

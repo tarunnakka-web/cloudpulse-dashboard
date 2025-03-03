@@ -205,7 +205,7 @@ const ResourcesDashboard = () => {
                 </TableHead>
                 <TableBody>
                   {serviceResources.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((resource) => (
-                    <TableRow key={resource.id} sx={{ backgroundColor: "white" }}>
+                    <TableRow key={resource.id} sx={{ backgroundColor: "#dee0df" }}>
                       <TableCell>{resource.id}</TableCell>
                       <TableCell>{resource.type}</TableCell>
                       <TableCell>{resource.name}</TableCell>

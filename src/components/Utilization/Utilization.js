@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Alert , Box , Button } from "@mui/material";
+import { Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Alert, Box, Button, TextField } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from "recharts";
 
-
-// Constants and Sample Data Generation
 const sampleProjects = ["Project Alpha", "Project Beta", "Project Gamma", "Project Delta"];
 const services = ["Compute", "Storage", "Database", "Networking", "Security"];
 const resourceTypes = {
@@ -57,6 +55,7 @@ const Utilization = () => {
   const [utilizationData, setUtilizationData] = useState({});
   const [apiStatus, setApiStatus] = useState(apiStatusConstants.INITIAL);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -71,10 +70,10 @@ const Utilization = () => {
         }, 1000)
       );
 
-      // Simulating the addition of CPU and memory usage data
       const enrichedData = response.resources.reduce((acc, resource) => {
         if (!acc[resource.project]) acc[resource.project] = {};
         if (!acc[resource.project][resource.name]) acc[resource.project][resource.name] = {
+          type: resource.type,
           cpu: resource.cpu,
           memory: resource.memory
         };
@@ -95,59 +94,77 @@ const Utilization = () => {
 
   return (
     <Container sx={{ mt: 3 }}>
-      <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>
-        Resource Utilization (Project-wise & Resource-wise)
-      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h6" fontWeight="bold">
+          Resource Utilization (Project-wise & Resource-wise)
+        </Typography>
+        <TextField 
+          label="Search Resource Type" 
+          variant="outlined" 
+          size="small" 
+          value={searchQuery} 
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            mx: 2,
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: '#006a4d',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#006a4d',
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: '#006a4d',
+            },
+            '& .MuiOutlinedInput-input': {
+              color: '#006a4d',
+            },
+          }}
+        />
+      </Box>
+      
+      {apiStatus === apiStatusConstants.IN_PROGRESS && (
+        <Box height="70vh" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+          <CircularProgress sx={{ color: "#006a4d" }} />
+        </Box>
+      )}
 
-       {/* Centered Loading, Error and Retry Button */}
-       {apiStatus === apiStatusConstants.IN_PROGRESS && 
-       <Box height={"70vh"} display="flex" justifyContent="center" alignItems="center" flexDirection="column" sx={{ mb: 2 }}>
-        {apiStatus === apiStatusConstants.IN_PROGRESS && <CircularProgress sx={{color:"#006a4d"}}/>}
-        {apiStatus === apiStatusConstants.FAILURE && (
-          <>
-            <Alert severity="error">{error}</Alert>
-            <Button variant="contained"  onClick={fetchData} sx={{ marginTop: 2, backgroundColor:"#006a4d"}}>
-              Retry
-            </Button>
-          </>
-        )}
-      </Box> }
+      {apiStatus === apiStatusConstants.FAILURE && (
+        <Box textAlign="center">
+          <Alert severity="error">{error}</Alert>
+          <Button variant="contained" onClick={fetchData} sx={{ mt: 2, backgroundColor: "#006a4d" }}>
+            Retry
+          </Button>
+        </Box>
+      )}
 
       {apiStatus === apiStatusConstants.SUCCESS && Object.keys(utilizationData).map((project) => (
-        <Accordion key={project} defaultExpanded sx={{border:"1px solid #aaaaaa", mb:3, p:2}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{borderRadius:"10"}}/>}>
-            <Typography variant="h6" fontWeight={"bold"} >{project}</Typography>
+        <Accordion key={project} defaultExpanded sx={{ border: "1px solid #aaaaaa", mb: 3, p: 2 }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6" fontWeight="bold">{project}</Typography>
           </AccordionSummary>
+          <AccordionDetails>
+            
+            {Object.keys(utilizationData[project])
+              .filter(resource => utilizationData[project][resource].type.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map(resource => (
+                <> 
+                <Paper key={resource} sx={{ mb: 3, p: 2, border: "1px solid #aaaaaa", backgroundColor:"#dee0df"}}>
+                  <Typography variant="subtitle1" fontWeight="bold" marginBottom={3}>{resource}</Typography>
+                  <Typography variant="subtitle2" >CPU Usage (%)</Typography>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={utilizationData[project][resource].cpu}>
+                      <XAxis dataKey="time" stroke="#1976d2" />
+                      <YAxis />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="usage" stroke="#1976d2" fill="#1976d2" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
 
-          <AccordionDetails >
-            {Object.keys(utilizationData[project]).map((resource) => (
-              <Paper key={resource} sx={{ mb: 3, p: 2, border:"1px solid #aaaaaa" }}>
-                <Typography variant="subtitle1" sx={{ mb: 2 }} fontWeight={"bold"}>
-                  {resource}
-                </Typography>
-
-                {/* CPU Usage */}
-                <Typography variant="subtitle2" sx={{ mb: 2 }} fontWeight={"bold"}>
-                  CPU Usage (%)
-                </Typography>
-                <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={utilizationData[project][resource].cpu}>
-                <defs>
-                  <linearGradient id="cpuColor" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1976d2" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#1976d2" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="time" stroke="#1976d2" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Area type="monotone" dataKey="usage" stroke="#1976d2" fill="url(#cpuColor)" strokeWidth={2} />
-              </AreaChart>
-            </ResponsiveContainer>
-
-                {/* Memory Usage */}
-                <Typography variant="subtitle2" sx={{ mb: 2, mt: 3 }} fontWeight={"bold"}>
+                
+              <Typography variant="subtitle2" sx={{ mb: 2, mt: 3 }} >
                   Memory Usage (%)
                 </Typography>
                 <ResponsiveContainer width="100%" height={300}>
@@ -160,8 +177,10 @@ const Utilization = () => {
                 <Bar dataKey="usage" fill="#43a047" barSize={40} radius={[5, 5, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-              </Paper>
-            ))}
+            </Paper>
+               </>
+              ))}
+             
           </AccordionDetails>
         </Accordion>
       ))}

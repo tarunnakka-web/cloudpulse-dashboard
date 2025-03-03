@@ -27,7 +27,7 @@ const Cost = () => {
       <Typography fontWeight={"bold"} variant="h5" sx={{ mb: 2 }}>CloudPulse Cost Monitoring</Typography>
 
       {/* Monthly Cost Bar Chart */}
-      <Paper sx={{ p: 2, mb: 3, border:"1px solid #aaaaaa" }}>
+      <Paper sx={{ p: 2, mb: 3, border:"1px solid #aaaaaa", backgroundColor:"#dee0df" }}>
         <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>Monthly Cost Overview</Typography>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={monthlyCostData} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
@@ -53,7 +53,7 @@ const Cost = () => {
           </TableHead>
           <TableBody>
             {resourceCostData.map((resource, index) => (
-              <TableRow key={index} sx={{border:"1px solid #aaaaaa"}}>
+              <TableRow key={index} sx={{border:"1px solid #aaaaaa", backgroundColor: "#dee0df"}}>
                 <TableCell>{resource.name}</TableCell>
                 <TableCell>{resource.type}</TableCell>
                 <TableCell>{resource.cost}</TableCell>
