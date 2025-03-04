@@ -123,7 +123,7 @@ const ResourcesDashboard = () => {
 
   return (
     <Container sx={{ mt: 3 }}>
-      <Typography variant="h5" mb={4} fontWeight="bold">LBG CloudPulse Resources</Typography>
+      <Typography variant="h5" mb={4} fontWeight="bold">LBG CloudPulse Resources page</Typography>
        {/* Centered Loading, Error and Retry Button */}
       <Select sx={{mb:3, backgroundColor:"#006a4d", color: "white",
                "& .MuiSelect-icon": { color: "white" },
