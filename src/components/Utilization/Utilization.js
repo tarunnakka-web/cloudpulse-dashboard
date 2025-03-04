@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Alert, Box, Button, TextField } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, AreaChart, Area, Line, LineChart } from "recharts";
+import {Card, CardContent} from "@mui/material";
+
+
 
 const sampleProjects = ["Project Alpha", "Project Beta", "Project Gamma", "Project Delta"];
 const services = ["Compute", "Storage", "Database", "Networking", "Security"];
@@ -12,6 +15,16 @@ const resourceTypes = {
   Networking: ["VPC Networks", "Load Balancers", "Cloud DNS"],
   Security: ["IAM Roles", "Firewall Rules"]
 };
+
+const data = Array.from({ length: 20 }, (_, i) => ({
+  time: `${i * 3} min`,
+  cpuMin: Math.random() * 20 + 10,
+  cpuMax: Math.random() * 40 + 50,
+  cpuSaturation: 95,
+  memoryMin: Math.random() * 2 + 2,
+  memoryMax: Math.random() * 6 + 6,
+  memorySaturation: 16,
+}));
 
 const generateSampleData = () => {
   return Array.from({ length: 100 }, (_, i) => {
@@ -98,30 +111,28 @@ const Utilization = () => {
         <Typography variant="h6" fontWeight="bold">
           Resource Utilization (Project-wise & Resource-wise)
         </Typography>
-        <TextField 
-          label="Search Resource Type" 
+         <TextField  
+          placeholder="Search by Resource type..."  
+          size="small"
           variant="outlined" 
-          size="small" 
-          value={searchQuery} 
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{
-            mx: 2,
-            '& .MuiOutlinedInput-root': {
-              '&:hover fieldset': {
-                borderColor: '#006a4d',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#006a4d',
-              },
+          value={searchQuery}  
+          onChange={(e) => setSearchQuery(e.target.value)} 
+          sx={{ 
+            mx: 2, 
+           
+            "& .MuiOutlinedInput-root": {
+              color: "#006a4d", // Input text color
+              "& fieldset": { borderColor: "#006a4d" }, // Default border color
+              "&:hover fieldset": { borderColor: "#004d36" }, // Darker on hover
+              "&.Mui-focused fieldset": { borderColor: "#006a4d" }, // Keep border color on focus
             },
-            '& .MuiInputLabel-root': {
-              color: '#006a4d',
-            },
-            '& .MuiOutlinedInput-input': {
-              color: '#006a4d',
-            },
-          }}
-        />
+            "& .MuiInputBase-input": {
+              color: "#006a4d", // Text color inside input
+              "&::placeholder": { color: "#006a4d", opacity: 1 }, // Placeholder color
+            }
+          }} 
+         
+        />  
       </Box>
       
       {apiStatus === apiStatusConstants.IN_PROGRESS && (
@@ -140,7 +151,7 @@ const Utilization = () => {
       )}
 
       {apiStatus === apiStatusConstants.SUCCESS && Object.keys(utilizationData).map((project) => (
-        <Accordion key={project} defaultExpanded sx={{ border: "1px solid #aaaaaa", mb: 3, p: 2 }}>
+        <Accordion key={project} defaultExpanded sx={{ border: "1px solid #aaaaaa", mt:3, mb: 3, p: 2 }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h6" fontWeight="bold">{project}</Typography>
           </AccordionSummary>
@@ -177,6 +188,27 @@ const Utilization = () => {
                 <Bar dataKey="usage" fill="#43a047" barSize={40} radius={[5, 5, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+                   
+            <Card sx={{ p: 2, boxShadow: 3, borderRadius: 2 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          CPU & Memory Usage Over Time
+        </Typography>
+        <LineChart width={600} height={400} data={data}>
+          <XAxis dataKey="time" />
+          <YAxis yAxisId="left" orientation="left" domain={[0, 100]} />
+          <YAxis yAxisId="right" orientation="right" domain={[0, 20]} />
+          <Tooltip />
+          <Legend />
+          <Line yAxisId="left" type="monotone" dataKey="cpuMin" stroke="#1E88E5" strokeDasharray="5 5" name="CPU Min" />
+          <Line yAxisId="left" type="monotone" dataKey="cpuMax" stroke="#1565C0" name="CPU Max" />
+          <Line yAxisId="left" type="monotone" dataKey="cpuSaturation" stroke="#D32F2F" strokeDasharray="3 3" name="CPU Saturation" />
+          <Line yAxisId="right" type="monotone" dataKey="memoryMin" stroke="#43A047" strokeDasharray="5 5" name="Memory Min" />
+          <Line yAxisId="right" type="monotone" dataKey="memoryMax" stroke="#2E7D32" name="Memory Max" />
+          <Line yAxisId="right" type="monotone" dataKey="memorySaturation" stroke="#FF9800" strokeDasharray="3 3" name="Memory Saturation" />
+        </LineChart>
+      </CardContent>
+    </Card>
             </Paper>
                </>
               ))}

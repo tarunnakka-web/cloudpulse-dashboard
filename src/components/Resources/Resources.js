@@ -138,17 +138,24 @@ const ResourcesDashboard = () => {
       </Select>
       <TextField  
   placeholder="Search by Resource type..."  
-  variant="outlined"  
+  variant="outlined" 
   value={searchTerm}  
-  onChange={(e) => setSearchTerm(e.target.value)}  
+  onChange={(e) => setSearchTerm(e.target.value)} 
   sx={{
     mb: 2, 
     mx: 2,  
-    "& .MuiOutlinedInput-notchedOutline": { borderColor: "#006a4d" }, // Default color
-    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#004d36" }, // Darker on hover
-    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#006a4d" }, // Keep color on focus
-    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#004d36" }, // Prevent losing color on hover out
-  }}  
+    "& .MuiOutlinedInput-root": {
+      color: "#006a4d", // Input text color
+      "& fieldset": { borderColor: "#006a4d" }, // Default border color
+      "&:hover fieldset": { borderColor: "#004d36" }, // Darker on hover
+      "&.Mui-focused fieldset": { borderColor: "#006a4d" }, // Keep border color on focus
+    },
+    "& .MuiInputBase-input": {
+      color: "#006a4d", // Text color inside input
+      "&::placeholder": { color: "#006a4d", opacity: 1 }, // Placeholder color
+    }
+  }} 
+ 
 />  
       <Select value={statusFilter} sx={{mb:3, backgroundColor:"#006a4d", color: "white",
                "& .MuiSelect-icon": { color: "white" },
