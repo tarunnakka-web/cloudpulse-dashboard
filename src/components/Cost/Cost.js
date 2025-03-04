@@ -29,16 +29,37 @@ const costData = {
 };
 
 // Mock data for resource-specific costs
-const resourceCostData = [
-  { name: "VM Instance 1", type: "Compute Engine", cost: "$300" },
-  { name: "Cloud SQL DB", type: "Database", cost: "$250" },
-  { name: "Storage Bucket A", type: "Storage", cost: "$180" },
-  { name: "BigQuery Dataset", type: "Analytics", cost: "$400" },
-  { name: "Cloud Function X", type: "Serverless", cost: "$150" },
-];
+const resourceCostData = {
+  Weekly: [
+    { name: "VM Instance 1", type: "Compute Engine", cost: "$50" },
+    { name: "Cloud SQL DB", type: "Database", cost: "$40" },
+    { name: "Storage Bucket A", type: "Storage", cost: "$30" },
+  ],
+  Monthly: [
+    { name: "VM Instance 1", type: "Compute Engine", cost: "$300" },
+    { name: "Cloud SQL DB", type: "Database", cost: "$250" },
+    { name: "Storage Bucket A", type: "Storage", cost: "$180" },
+    { name: "BigQuery Dataset", type: "Analytics", cost: "$400" },
+    { name: "Cloud Function X", type: "Serverless", cost: "$150" },
+  ],
+  HalfYearly: [
+    { name: "VM Instance 1", type: "Compute Engine", cost: "$1800" },
+    { name: "Cloud SQL DB", type: "Database", cost: "$1600" },
+    { name: "Storage Bucket A", type: "Storage", cost: "$1200" },
+  ],
+  Yearly: [
+    { name: "VM Instance 1", type: "Compute Engine", cost: "$3600" },
+    { name: "Cloud SQL DB", type: "Database", cost: "$3200" },
+    { name: "Storage Bucket A", type: "Storage", cost: "$2400" },
+    { name: "BigQuery Dataset", type: "Analytics", cost: "$5000" },
+  ],
+};
 
 const Cost = () => {
   const [filter, setFilter] = React.useState("Monthly");
+
+  const filteredResourceCostData = resourceCostData[filter]
+
   return (
     <Container sx={{ mt: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -92,7 +113,7 @@ const Cost = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {resourceCostData.map((resource, index) => (
+            {filteredResourceCostData.map((resource, index) => (
               <TableRow key={index} sx={{border:"1px solid #aaaaaa", backgroundColor: "#dee0df"}}>
                 <TableCell>{resource.name}</TableCell>
                 <TableCell>{resource.type}</TableCell>
