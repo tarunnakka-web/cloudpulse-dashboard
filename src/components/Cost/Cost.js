@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Typography, Paper, Table, TableHead, TableRow, TableCell, TableBody, MenuItem, Select, FormControl, InputLabel, Box } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-// Updated Mock data for different time ranges
+// Updated Mock data for different time ranges  dummy data
 const costData = {
   Weekly: [
     { period: "Week 1", cost: 320 },
