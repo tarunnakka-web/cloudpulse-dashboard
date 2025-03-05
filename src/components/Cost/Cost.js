@@ -1,98 +1,122 @@
-import React from "react";
-import { Container, Typography, Paper, Table, TableHead, TableRow, TableCell, TableBody, FormControl, Select, MenuItem } from "@mui/material";
-import {BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import {Box} from "@mui/material";
-// Mock data for monthly costs (Replace with API fetch in production)
+import React, { useState } from "react";
+import { Container, Typography, Paper, Table, TableHead, TableRow, TableCell, TableBody, MenuItem, Select, FormControl, InputLabel, Box } from "@mui/material";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+// Updated Mock data for different time ranges  dummy data
 const costData = {
   Weekly: [
-    { period: "Week 1", cost: 300 },
-    { period: "Week 2", cost: 250 },
-    { period: "Week 3", cost: 280 },
-    { period: "Week 4", cost: 270 },
+    { period: "Week 1", cost: 320 },
+    { period: "Week 2", cost: 270 },
+    { period: "Week 3", cost: 290 },
+    { period: "Week 4", cost: 330 },
   ],
   Monthly: [
-    { period: "Jan", cost: 1200 },
-    { period: "Feb", cost: 950 },
-    { period: "Mar", cost: 1100 },
-    { period: "Apr", cost: 1300 },
-    { period: "May", cost: 900 },
-    { period: "Jun", cost: 1250 },
+    { period: "Jan", cost: 1300 },
+    { period: "Feb", cost: 1000 },
+    { period: "Mar", cost: 1150 },
+    { period: "Apr", cost: 1350 },
+    { period: "May", cost: 950 },
+    { period: "Jun", cost: 1280 },
+    { period: "Jul", cost: 1400 },
+    { period: "Aug", cost: 1200 },
+    { period: "Sep", cost: 1100 },
+    { period: "Oct", cost: 1250 },
+    { period: "Nov", cost: 1300 },
+    { period: "Dec", cost: 1450 },
   ],
-  HalfYearly: [
-    { period: "H1 2023", cost: 7000 },
-    { period: "H2 2023", cost: 8200 },
+  Quarterly: [
+    { period: "Q1", cost: 3350 },
+    { period: "Q2", cost: 3550 },
+    { period: "Q3", cost: 3250 },
+    { period: "Q4", cost: 3700 },
+  ],
+  "Half Yearly": [
+    { period: "H1", cost: 6900 },
+    { period: "H2", cost: 7300 },
   ],
   Yearly: [
-    { period: "2022", cost: 15000 },
-    { period: "2023", cost: 18000 },
+    { period: "2023", cost: 14000 },
+    { period: "2024", cost: 15000 },
   ],
 };
 
-// Mock data for resource-specific costs
+const resourceNames = [
+  "VM Instance 1",
+  "Cloud SQL DB",
+  "Storage Bucket A",
+  "BigQuery Dataset",
+  "Cloud Function X",
+];
+
 const resourceCostData = {
-  Weekly: [
-    { name: "VM Instance 1", type: "Compute Engine", cost: "$50" },
-    { name: "Cloud SQL DB", type: "Database", cost: "$40" },
-    { name: "Storage Bucket A", type: "Storage", cost: "$30" },
-  ],
-  Monthly: [
-    { name: "VM Instance 1", type: "Compute Engine", cost: "$300" },
-    { name: "Cloud SQL DB", type: "Database", cost: "$250" },
-    { name: "Storage Bucket A", type: "Storage", cost: "$180" },
-    { name: "BigQuery Dataset", type: "Analytics", cost: "$400" },
-    { name: "Cloud Function X", type: "Serverless", cost: "$150" },
-  ],
-  HalfYearly: [
-    { name: "VM Instance 1", type: "Compute Engine", cost: "$1800" },
-    { name: "Cloud SQL DB", type: "Database", cost: "$1600" },
-    { name: "Storage Bucket A", type: "Storage", cost: "$1200" },
-  ],
-  Yearly: [
-    { name: "VM Instance 1", type: "Compute Engine", cost: "$3600" },
-    { name: "Cloud SQL DB", type: "Database", cost: "$3200" },
-    { name: "Storage Bucket A", type: "Storage", cost: "$2400" },
-    { name: "BigQuery Dataset", type: "Analytics", cost: "$5000" },
-  ],
+  Weekly: [80, 65, 50, 110, 55],
+  Monthly: [320, 260, 190, 420, 160],
+  Quarterly: [950, 780, 560, 1250, 470],
+  "Half Yearly": [1900, 1600, 1120, 2500, 950],
+  Yearly: [3800, 3200, 2240, 5000, 1900],
 };
 
 const Cost = () => {
-  const [filter, setFilter] = React.useState("Monthly");
+  const [selectedPeriod, setSelectedPeriod] = useState("Weekly");
+  const [selectedGraphPeriod, setSelectedGraphPeriod] = useState(null);
+  const [filteredResourceCosts, setFilteredResourceCosts] = useState(resourceCostData[selectedPeriod]);
 
-  const filteredResourceCostData = resourceCostData[filter]
+  const handleBarClick = (data) => {
+    if (data && data.activePayload && data.activePayload.length > 0) {
+      setSelectedGraphPeriod(data.activePayload[0].payload.period);
+      setFilteredResourceCosts(resourceCostData[selectedPeriod]);
+    }
+  };
+
+  const totalCost = filteredResourceCosts.reduce((acc, cost) => acc + cost, 0);
 
   return (
     <Container sx={{ mt: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-      <Typography fontWeight={"bold"} variant="h5" sx={{ mb: 2 }}>CloudPulse Cost Monitoring</Typography>
-      <FormControl sx={{ mb: 3, minWidth: 250, padding:"0px", 
-    mx: 2,  
-    "& .MuiOutlinedInput-root": {
-      color: "#006a4d", // Input text color
-      "& fieldset": { borderColor: "#006a4d" }, // Default border color
-      "&:hover fieldset": { borderColor: "#004d36" }, // Darker on hover
-      "&.Mui-focused fieldset": { borderColor: "#006a4d" }, // Keep border color on focus
-    },
-    "& .MuiInputBase-input": {
-      color: "#006a4d", // Text color inside input
-      "&::placeholder": { color: "#006a4d", opacity: 1 }, // Placeholder color
-    }
-   }}>
-        <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <MenuItem value="Weekly">Weekly</MenuItem>
-          <MenuItem value="Monthly">Monthly</MenuItem>
-          <MenuItem value="HalfYearly">Half-Yearly</MenuItem>
-          <MenuItem value="Yearly">Yearly</MenuItem>
-        </Select>
-      </FormControl>
-       </Box>
-      {/* Monthly Cost Bar Chart */}
-      <Paper sx={{ p: 4, mb: 3, border:"1px solid #aaaaaa", backgroundColor:"#dee0df" }}>
-        <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>{filter} Cost Overview</Typography>
-        <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={costData[filter]} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
-            <XAxis dataKey="period" 
-              tick={{ fontSize: 14, fill: "#006a4d" }} 
-              label={{ value: filter, position: "insideBottom", dy: 10, fill: "#006a4d" }} />
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+        <Typography fontWeight={"bold"} variant="h5">
+          CloudPulse Cost Monitoring
+        </Typography>
+        <FormControl sx={{ mb: 3, minWidth: 250, padding:"0px", 
+          mx: 2,  
+          "& .MuiOutlinedInput-root": {
+            color: "#006a4d", // Input text color
+            "& fieldset": { borderColor: "#006a4d" }, // Default border color
+            "&:hover fieldset": { borderColor: "#004d36" }, // Darker on hover
+            "&.Mui-focused fieldset": { borderColor: "#006a4d" }, // Keep border color on focus
+          },
+          "& .MuiInputBase-input": {
+            color: "#006a4d", // Text color inside input
+            "&::placeholder": { color: "#006a4d", opacity: 1 }, // Placeholder color
+          }
+        }}>
+          
+          <Select
+            value={selectedPeriod}
+            onChange={(e) => {
+              setSelectedPeriod(e.target.value);
+              setSelectedGraphPeriod(null);
+              setFilteredResourceCosts(resourceCostData[e.target.value]);
+            }}
+          >
+            {Object.keys(costData).map((period) => (
+              <MenuItem key={period} value={period}>
+                {period}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Typography variant="body2" sx={{ mb: 3 }}>
+        Select a time period from the dropdown or click on the cost graph to view the corresponding cost breakdown.
+      </Typography>
+
+      <Paper sx={{ p: 2, mb: 3, border: "1px solid #aaaaaa", backgroundColor: "#dee0df" }}>
+        <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>
+          {selectedPeriod} Cost Overview
+        </Typography>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={costData[selectedPeriod]} margin={{ top: 10, right: 30, left: 0, bottom: 10 }} onClick={handleBarClick}>
+            <XAxis dataKey="period" />
             <YAxis />
             <Tooltip />
             <Legend />
@@ -101,25 +125,30 @@ const Cost = () => {
         </ResponsiveContainer>
       </Paper>
 
-      {/* Resource-Specific Cost Table */}
-      <Paper sx={{ p: 4, border:"1px solid #aaaaaa" }}>
-        <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>Resource-wise Cost Breakdown</Typography>
+      <Paper sx={{ p: 2, border: "1px solid #aaaaaa", mb: 3 }}>
+        <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>
+          {selectedGraphPeriod ? `${selectedGraphPeriod} Resource-wise Cost Breakdown` : "Resource-wise Cost Breakdown"}
+        </Typography>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#f4f4f4"}}>
-              <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Name</b></TableCell>
-              <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Type</b></TableCell>
-              <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Cost</b></TableCell>
+            <TableRow sx={{ backgroundColor: "#f4f4f4" }}>
+              <TableCell><b>Name</b></TableCell>
+              <TableCell><b>Type</b></TableCell>
+              <TableCell><b>Cost</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredResourceCostData.map((resource, index) => (
-              <TableRow key={index} sx={{border:"1px solid #aaaaaa", backgroundColor: "#dee0df"}}>
-                <TableCell>{resource.name}</TableCell>
-                <TableCell>{resource.type}</TableCell>
-                <TableCell>{resource.cost}</TableCell>
+            {resourceNames.map((name, index) => (
+              <TableRow key={index}>
+                <TableCell>{name}</TableCell>
+                <TableCell>{["Compute Engine", "Database", "Storage", "Analytics", "Serverless"][index]}</TableCell>
+                <TableCell>${filteredResourceCosts[index] || 0}</TableCell>
               </TableRow>
             ))}
+            <TableRow sx={{ backgroundColor: "#f4f4f4" }}>
+              <TableCell colSpan={2}><b>Total</b></TableCell>
+              <TableCell><b>${totalCost}</b></TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </Paper>
