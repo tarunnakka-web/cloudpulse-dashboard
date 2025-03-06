@@ -175,40 +175,42 @@ const Utilization = () => {
                   </ResponsiveContainer>
 
                 
-              <Typography variant="subtitle2" sx={{ mb: 2, mt: 3 }} >
-                  Memory Usage (%)
-                </Typography>
-                <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={utilizationData[project][resource].memory}>
-                <XAxis dataKey="time" stroke="#43a047" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="usage" fill="#43a047" barSize={40} radius={[5, 5, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+                  <Typography variant="subtitle2" sx={{ mb: 2, mt: 3 }} >
+                      Memory Usage (%)
+                  </Typography>
+                  <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={utilizationData[project][resource].memory}>
+                    <XAxis dataKey="time" stroke="#43a047" />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="usage" fill="#43a047" barSize={40} radius={[5, 5, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
                    
-            <Card sx={{ p: 2, boxShadow: 3, borderRadius: 2 }}>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          CPU & Memory Usage Over Time
-        </Typography>
-        <LineChart width={600} height={400} data={data}>
-          <XAxis dataKey="time" />
-          <YAxis yAxisId="left" orientation="left" domain={[0, 100]} />
-          <YAxis yAxisId="right" orientation="right" domain={[0, 20]} />
-          <Tooltip />
-          <Legend />
-          <Line yAxisId="left" type="monotone" dataKey="cpuMin" stroke="#1E88E5" strokeDasharray="5 5" name="CPU Min" />
-          <Line yAxisId="left" type="monotone" dataKey="cpuMax" stroke="#1565C0" name="CPU Max" />
-          <Line yAxisId="left" type="monotone" dataKey="cpuSaturation" stroke="#D32F2F" strokeDasharray="3 3" name="CPU Saturation" />
-          <Line yAxisId="right" type="monotone" dataKey="memoryMin" stroke="#43A047" strokeDasharray="5 5" name="Memory Min" />
-          <Line yAxisId="right" type="monotone" dataKey="memoryMax" stroke="#2E7D32" name="Memory Max" />
-          <Line yAxisId="right" type="monotone" dataKey="memorySaturation" stroke="#FF9800" strokeDasharray="3 3" name="Memory Saturation" />
-        </LineChart>
-      </CardContent>
-    </Card>
+              <Card sx={{ p: 2, boxShadow: 3, borderRadius: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    CPU & Memory Usage Over Time
+                  </Typography>
+                  <LineChart width={600} height={400} data={data}>
+                    <XAxis dataKey="time" />
+                    <YAxis yAxisId="left" orientation="left" domain={[0, 100]} />
+                    <YAxis yAxisId="right" orientation="right" domain={[0, 20]} />
+                    <Tooltip />
+                    <Legend />
+                    <Line yAxisId="left" type="monotone" dataKey="cpuMin" stroke="#1E88E5" strokeDasharray="5 5" name="CPU Min" />
+                    <Line yAxisId="left" type="monotone" dataKey="cpuMax" stroke="#1565C0" name="CPU Max" />
+                    <Line yAxisId="left" type="monotone" dataKey="cpuSaturation" stroke="#D32F2F" strokeDasharray="3 3" name="CPU Saturation" />
+                    <Line yAxisId="right" type="monotone" dataKey="memoryMin" stroke="#43A047" strokeDasharray="5 5" name="Memory Min" />
+                    <Line yAxisId="right" type="monotone" dataKey="memoryMax" stroke="#2E7D32" name="Memory Max" />
+                    <Line yAxisId="right" type="monotone" dataKey="memorySaturation" stroke="#FF9800" strokeDasharray="3 3" name="Memory Saturation" />
+                  </LineChart>
+                </CardContent>
+              </Card>
+
+              
             </Paper>
                </>
               ))}
