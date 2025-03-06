@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Container, Typography, Paper, Table, TableHead, TableRow, TableCell, TableBody, MenuItem, Select, FormControl, InputLabel, Box } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-<<<<<<< HEAD
 // Updated Mock data for different time ranges
-=======
-// Updated Mock data for different time ranges  dummy data
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
 const costData = {
   Weekly: [
     { period: "Week 1", cost: 320 },
@@ -114,11 +110,7 @@ const Cost = () => {
         Select a time period from the dropdown or click on the cost graph to view the corresponding cost breakdown.
       </Typography>
 
-<<<<<<< HEAD
       <Paper sx={{ p: 4, mb: 3, border: "1px solid #aaaaaa", backgroundColor: "#dee0df" }}>
-=======
-      <Paper sx={{ p: 2, mb: 3, border: "1px solid #aaaaaa", backgroundColor: "#dee0df" }}>
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
         <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>
           {selectedPeriod} Cost Overview
         </Typography>
@@ -133,45 +125,27 @@ const Cost = () => {
         </ResponsiveContainer>
       </Paper>
 
-<<<<<<< HEAD
       <Paper sx={{ p: 4, border: "1px solid #aaaaaa", mb: 3 }}>
-=======
-      <Paper sx={{ p: 2, border: "1px solid #aaaaaa", mb: 3 }}>
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
         <Typography variant="h6" sx={{ mb: 2 }} fontWeight={"bold"}>
           {selectedGraphPeriod ? `${selectedGraphPeriod} Resource-wise Cost Breakdown` : "Resource-wise Cost Breakdown"}
         </Typography>
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f4f4f4" }}>
-<<<<<<< HEAD
               <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Name</b></TableCell>
               <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Type</b></TableCell>
               <TableCell sx={{backgroundColor:"#006a4d", color:"white"}}><b>Cost</b></TableCell>
-=======
-              <TableCell><b>Name</b></TableCell>
-              <TableCell><b>Type</b></TableCell>
-              <TableCell><b>Cost</b></TableCell>
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
             </TableRow>
           </TableHead>
           <TableBody>
             {resourceNames.map((name, index) => (
-<<<<<<< HEAD
               <TableRow key={index} sx={{ backgroundColor: "#dee0df " }}>
-=======
-              <TableRow key={index}>
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
                 <TableCell>{name}</TableCell>
                 <TableCell>{["Compute Engine", "Database", "Storage", "Analytics", "Serverless"][index]}</TableCell>
                 <TableCell>${filteredResourceCosts[index] || 0}</TableCell>
               </TableRow>
             ))}
-<<<<<<< HEAD
             <TableRow sx={{ backgroundColor: "#dee0df " }}>
-=======
-            <TableRow sx={{ backgroundColor: "#f4f4f4" }}>
->>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
               <TableCell colSpan={2}><b>Total</b></TableCell>
               <TableCell><b>${totalCost}</b></TableCell>
             </TableRow>
