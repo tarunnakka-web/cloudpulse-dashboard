@@ -15,7 +15,7 @@ import Chip from '@mui/material/Chip';
 import { Inventory2Outlined } from "@mui/icons-material";
 // import HomeIcon from '@mui/icons-material/Home';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+//Changes
 // Define API status constants to manage API request states
 const apiStatusConstants = {
   INITIAL: "INITIAL",

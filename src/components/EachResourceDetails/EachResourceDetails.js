@@ -1,13 +1,30 @@
+<<<<<<< HEAD
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Typography, Paper, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, Grid2 } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, Line } from "recharts";
+=======
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Container, Typography, Paper, Divider, Table, TableBody, TableCell, 
+  TableContainer, TableHead, TableRow, Button, Grid
+} from "@mui/material";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area
+} from "recharts";
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
 
 const EachResourceDetails = () => {
   const location = useLocation();
-  const navigate = useNavigate();  // Hook to navigate programmatically
+  const navigate = useNavigate();
   const resource = location.state?.resource;
+<<<<<<< HEAD
+=======
+  
+  // Machine Configuration (Mocked GCP-style)
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
   const [configuration, setConfiguration] = useState({
     machineType: "e2-standard-4",
     vCPUs: 4,
@@ -15,19 +32,27 @@ const EachResourceDetails = () => {
     diskType: "Balanced Persistent Disk (pd-balanced)"
   });
 
+<<<<<<< HEAD
   useEffect(() => {
     fetchUtilizationData();
   }, [configuration]);
 
+=======
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
   // State for utilization data
   const [utilizationCpuData, setUtilizationCpuData] = useState([]);
   const [utilizationMemoryData, setUtilizationMemoryData] = useState([]);
   const [cpuMin, setCpuMin] = useState(0);
   const [cpuMax, setCpuMax] = useState(0);
+<<<<<<< HEAD
   const [cpuThreshold, setCpuThreshold] = useState(0);
   const [memoryMin, setMemoryMin] = useState(0);
   const [memoryMax, setMemoryMax] = useState(0);
   const [memoryThreshold, setMemoryThreshold] = useState(0);
+=======
+  const [memoryMin, setMemoryMin] = useState(0);
+  const [memoryMax, setMemoryMax] = useState(0);
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
 
   // Generate realistic CPU and Memory usage based on machine config
   const fetchUtilizationData = async () => {
@@ -51,16 +76,28 @@ const EachResourceDetails = () => {
       // Min/Max calculations based on real machine capacity
       setCpuMin(Math.min(...cpuData.map(d => d.cpu)));
       setCpuMax(Math.max(...cpuData.map(d => d.cpu)));
+<<<<<<< HEAD
       setCpuThreshold(maxCpuLoad * 0.8); // Example threshold at 80% of max load
 
       setMemoryMin(Math.min(...memoryData.map(d => d.memory)));
       setMemoryMax(Math.max(...memoryData.map(d => d.memory)));
       setMemoryThreshold(maxMemoryLoad * 0.8); // Example threshold at 80% of max load
+=======
+      setMemoryMin(Math.min(...memoryData.map(d => d.memory)));
+      setMemoryMax(Math.max(...memoryData.map(d => d.memory)));
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
 
     } catch (error) {
       console.error("Error fetching utilization data:", error);
     }
   };
+<<<<<<< HEAD
+=======
+
+  useEffect(() => {
+    fetchUtilizationData();
+  }, [configuration]);
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
 
   if (!resource) {
     return (
@@ -73,7 +110,8 @@ const EachResourceDetails = () => {
   return (
     <Container sx={{ mt: 3 }}>
       {/* Back Button */}
-      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mb: 2, border:"2px solid #006a4d", color:"#006a4d" }}>
+      <Button variant="outlined" onClick={() => navigate(-1)}
+        sx={{ mb: 2, border: "2px solid #006a4d", color: "#006a4d" }}>
         Back
       </Button>
 
@@ -83,14 +121,14 @@ const EachResourceDetails = () => {
         </Typography>
         <Divider sx={{ mb: 2 }} />
 
-        {/* Dynamic Table */}
-        <TableContainer component={Paper}>
+        {/* Previous Resource Details Table */}
+        <TableContainer component={Paper} sx={{ mb: 3 }}>
           <Table>
             <TableHead>
               <TableRow >
                 {Object.keys(resource).map((key, index) => (
                   <TableCell key={index} variant="head" sx={{ fontWeight: 700, backgroundColor:"#006a4d", color:"white" }}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)} {/* Capitalize key names */}
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
                   </TableCell>
                 ))}
               </TableRow>
@@ -104,20 +142,36 @@ const EachResourceDetails = () => {
             </TableBody>
           </Table>
         </TableContainer>
+<<<<<<< HEAD
         
          {/* Machine Configuration Table */}
          <Typography mt={5} variant="h6" fontWeight={"bold"} gutterBottom>
           Machine Configuration
         </Typography>
         <TableContainer  component={Paper} >
+=======
+
+        {/* Machine Configuration Table */}
+        <Typography variant="h6" gutterBottom>
+          Machine Configuration
+        </Typography>
+        <TableContainer component={Paper}>
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
           <Table>
             <TableBody>
               {Object.entries(configuration).map(([key, value]) => (
                 <TableRow key={key}>
+<<<<<<< HEAD
                   <TableCell sx={{ fontWeight: "bold", backgroundColor: "#dee0df" }}>
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </TableCell>
                   <TableCell sx={{backgroundColor:"#dee0df"}}>{value}{key === "memoryGB" ? " GB" : ""}</TableCell>
+=======
+                  <TableCell sx={{ fontWeight: "bold", backgroundColor: "#f4f4f4" }}>
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </TableCell>
+                  <TableCell>{value}{key === "memoryGB" ? " GB" : ""}</TableCell>
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
                 </TableRow>
               ))}
             </TableBody>
@@ -130,6 +184,7 @@ const EachResourceDetails = () => {
         <Typography variant="h6" gutterBottom>
           CPU Utilization
         </Typography>
+<<<<<<< HEAD
         <Box sx={{ position: 'absolute', top: 16, right: 16, backgroundColor: 'white', padding: 2, borderRadius: 1, boxShadow: 3 }}>
           <Typography variant="body2" fontWeight="bold">Min CPU: {cpuMin} %</Typography>
           <Typography variant="body2" fontWeight="bold">Max CPU: {cpuMax} %</Typography>
@@ -139,6 +194,20 @@ const EachResourceDetails = () => {
           <Typography variant="body2" fontWeight="bold">Threshold Memory: {memoryThreshold} MB</Typography>
         </Box>
         <ResponsiveContainer width="100%" height={400}>
+=======
+
+        {/* Min/Max CPU Values */}
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid item xs={6}>
+            <Typography variant="body1" fontWeight="bold">Min CPU: {cpuMin} %</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1" fontWeight="bold">Max CPU: {cpuMax} %</Typography>
+          </Grid>
+        </Grid>
+
+        <ResponsiveContainer width="100%" height={300}>
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
           <AreaChart data={utilizationCpuData}>
             <XAxis dataKey="time" stroke="#1976d2" />
             <YAxis domain={[0, configuration.vCPUs * 100]} />
@@ -146,6 +215,7 @@ const EachResourceDetails = () => {
             <Tooltip />
             <Legend />
             <Area type="monotone" dataKey="cpu" stroke="#1976d2" fill="#1976d2" name="CPU Usage (%)" />
+<<<<<<< HEAD
             <Line type="monotone" dataKey={() => cpuThreshold} stroke="#ff7300" name="CPU Threshold (%)" dot={false} />
           </AreaChart>
         </ResponsiveContainer>
@@ -173,6 +243,36 @@ const EachResourceDetails = () => {
           <Line type="monotone" dataKey={() => memoryThreshold} stroke="#ff7300" name="Memory Threshold (MB)" dot={false} />
         </BarChart>
       </ResponsiveContainer>
+=======
+          </AreaChart>
+        </ResponsiveContainer>
+
+        {/* Utilization Memory Chart */}
+        <Typography variant="h6" gutterBottom mt={3}>
+          Memory Utilization
+        </Typography>
+
+        {/* Min/Max Memory Values */}
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid item xs={6}>
+            <Typography variant="body1" fontWeight="bold">Min Memory: {memoryMin} MB</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1" fontWeight="bold">Max Memory: {memoryMax} MB</Typography>
+          </Grid>
+        </Grid>
+
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={utilizationMemoryData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="time" stroke="#43a047"/>
+            <YAxis domain={[0, configuration.memoryGB * 1024]} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="memory" fill="#43a047" name="Memory Usage (MB)" barSize={40} radius={[5, 5, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+>>>>>>> 8f45db20eea582ddb18c64bcfa283350b6633e2f
       </Paper>
     </Container>
   );

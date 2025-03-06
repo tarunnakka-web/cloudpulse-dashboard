@@ -1,18 +1,8 @@
 import * as React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useNotification } from '../../context/NotificationContext';
 import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  IconButton,
-  Badge,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
+  AppBar, Box, Toolbar, Typography, IconButton, Badge, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -24,12 +14,12 @@ import {
   Lightbulb as OpportunitiesIcon,
   PowerSettingsNew as GreenSwitchIcon,
   Logout,
-  MenuOpen as MenuOpenIcon
+  MenuOpen as MenuOpenIcon,
+  Dashboard as DashboardIcon
 } from '@mui/icons-material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import { Link, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
+const collapsedDrawerWidth = 60; // Sidebar width when collapsed
 
 const menuItems = [
   { text: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
@@ -43,7 +33,7 @@ const menuItems = [
 
 export default function Main() {
   const { notificationHistory } = useNotification();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); // Sidebar close by default
   const location = useLocation();
   const [isOptionSelected, setOptionSelected] = React.useState(location.pathname);
 
@@ -90,59 +80,53 @@ export default function Main() {
 
       {/* Sidebar Drawer */}
       <Drawer 
-        variant="persistent" 
+        variant="permanent" 
         anchor="left" 
         open={open} 
-        sx={{ '& .MuiDrawer-paper': { width: drawerWidth, backgroundColor: "white"} }}
+        sx={{ '& .MuiDrawer-paper': { width: open ? drawerWidth : collapsedDrawerWidth, backgroundColor: "white", transition: 'width 0.3s' } }}
       >
         <Toolbar sx={{ backgroundColor: "#006a4d", display: "flex", justifyContent: "center", height:"64px" }}>
-          <img 
-            src="https://lloydstechnologycentre.com/assets/site/ltc-new-logo.svg" 
-            alt="Lloyds Logo" 
-            style={{ width: "180px", height: "auto", maxWidth: "100%" }} // Adjust width, maintain aspect ratio
-          />
+          {open && (
+            <img 
+              src="https://lloydstechnologycentre.com/assets/site/ltc-new-logo.svg" 
+              alt="Lloyds Logo" 
+              style={{ width: "180px", height: "auto", maxWidth: "100%" }}
+            />
+          )}
         </Toolbar>
 
-
-        {/* <Divider /> */}
+        <Divider />
 
         {/* Sidebar Menu Items */}
-        <List sx={{ backgroundColor: "white", m:1, borderRadius:3}}>
-      {menuItems.map(({ text, path, icon }) => (
-        <ListItem
-          disableGutters
-          key={text}
-          component={Link}
-          to={path}
-          onClick={() => setOptionSelected(path)} // Update selected item
-          sx={{
-            mb:0.5,
-            pl:2,
-            pr:2,
-            color: isOptionSelected === path ? "#006a4d" : "black", // Selected item color
-            fontWeight: isOptionSelected === path ? "bold" : "normal", // Bold font when selected
-            backgroundColor: isOptionSelected === path ? "rgba(0, 106, 77, 0.1)" : "white", // Light background for selected item
-            "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-              color: isOptionSelected === path ? "#006a4d" : "inherit", // Match text & icon color for selected
-              fontWeight: isOptionSelected === path ? "bold" : "normal",
-            },
-            "&:hover": {
-              color: "#006a4d",
-              backgroundColor: "rgba(0, 128, 0, 0.1)",
-              fontWeight: "bold", // Make text bold on hover
-              "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-                color: "#006a4d",
-                fontWeight: "bold",
-              },
-            },
-          }}
-        >
-          <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-        
+        <List sx={{ backgroundColor: "white", m: 1, borderRadius: 3 }}>
+          {menuItems.map(({ text, path, icon }) => (
+            <ListItem
+              disableGutters
+              key={text}
+              component={Link}
+              to={path}
+              onClick={() => setOptionSelected(path)}
+              sx={{
+                mb: 0.5,
+                pl: 2,
+                pr: 2,
+                color: isOptionSelected === path ? "#006a4d" : "black",
+                fontWeight: isOptionSelected === path ? "bold" : "normal",
+                backgroundColor: isOptionSelected === path ? "rgba(0, 106, 77, 0.1)" : "white",
+                display: "flex",
+                alignItems: "center",
+                "&:hover": {
+                  color: "#006a4d",
+                  backgroundColor: "rgba(0, 128, 0, 0.1)",
+                  fontWeight: "bold",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "inherit", minWidth: 40 }}>{icon}</ListItemIcon>
+              {open && <ListItemText primary={text} />} {/* Hide text if sidebar is collapsed */}
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
 
       {/* Main Content Area */}
@@ -152,8 +136,8 @@ export default function Main() {
           flexGrow: 1,
           p: 3,
           transition: 'margin 0.3s',
-          marginLeft: open ? `${drawerWidth}px` : '0px',
-          width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
+          marginLeft: open ? `${drawerWidth}px` : `${collapsedDrawerWidth}px`,
+          width: open ? `calc(100% - ${drawerWidth}px)` : `calc(100% - ${collapsedDrawerWidth}px)`,
         }}
       >
         <Toolbar /> {/* Spacer for AppBar height */}
