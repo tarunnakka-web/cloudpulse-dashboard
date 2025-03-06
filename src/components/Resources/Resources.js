@@ -125,6 +125,7 @@ const ResourcesDashboard = () => {
     <Container sx={{ mt: 3 }}>
       <Typography variant="h5" mb={4} fontWeight="bold">LBG CloudPulse Resources</Typography>
        {/* Centered Loading, Error and Retry Button */}
+       <Box sx={{display:"flex", justifyContent:"space-between"}}> 
       <Select sx={{mb:3, backgroundColor:"#006a4d", color: "white",
                "& .MuiSelect-icon": { color: "white" },
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#006a4d" }, // Default outline color
@@ -136,6 +137,7 @@ const ResourcesDashboard = () => {
           <MenuItem key={proj} value={proj}>{proj}</MenuItem>
         ))}
       </Select>
+      <Box >
       <TextField  
   placeholder="Search by Resource type..."  
   variant="outlined" 
@@ -169,6 +171,8 @@ const ResourcesDashboard = () => {
         <MenuItem value="Available">Available</MenuItem>
         <MenuItem value="Pending">Pending</MenuItem>
       </Select>  
+      </Box>
+      </Box>
 
        {apiStatus === apiStatusConstants.IN_PROGRESS && 
             <Box height={"70vh"} display="flex" justifyContent="center" alignItems="center" flexDirection="column" sx={{ mb: 2 }}>

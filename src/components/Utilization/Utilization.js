@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Alert, Box, Button, TextField } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, AreaChart, Area, Line, LineChart } from "recharts";
-import {Card, CardContent} from "@mui/material";
+// import {Card, CardContent} from "@mui/material";
 
 
 
@@ -15,16 +15,6 @@ const resourceTypes = {
   Networking: ["VPC Networks", "Load Balancers", "Cloud DNS"],
   Security: ["IAM Roles", "Firewall Rules"]
 };
-
-const data = Array.from({ length: 20 }, (_, i) => ({
-  time: `${i * 3} min`,
-  cpuMin: Math.random() * 20 + 10,
-  cpuMax: Math.random() * 40 + 50,
-  cpuSaturation: 95,
-  memoryMin: Math.random() * 2 + 2,
-  memoryMax: Math.random() * 6 + 6,
-  memorySaturation: 16,
-}));
 
 const generateSampleData = () => {
   return Array.from({ length: 100 }, (_, i) => {
@@ -188,27 +178,6 @@ const Utilization = () => {
                 <Bar dataKey="usage" fill="#43a047" barSize={40} radius={[5, 5, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-                   
-            <Card sx={{ p: 2, boxShadow: 3, borderRadius: 2 }}>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          CPU & Memory Usage Over Time
-        </Typography>
-        <LineChart width={600} height={400} data={data}>
-          <XAxis dataKey="time" />
-          <YAxis yAxisId="left" orientation="left" domain={[0, 100]} />
-          <YAxis yAxisId="right" orientation="right" domain={[0, 20]} />
-          <Tooltip />
-          <Legend />
-          <Line yAxisId="left" type="monotone" dataKey="cpuMin" stroke="#1E88E5" strokeDasharray="5 5" name="CPU Min" />
-          <Line yAxisId="left" type="monotone" dataKey="cpuMax" stroke="#1565C0" name="CPU Max" />
-          <Line yAxisId="left" type="monotone" dataKey="cpuSaturation" stroke="#D32F2F" strokeDasharray="3 3" name="CPU Saturation" />
-          <Line yAxisId="right" type="monotone" dataKey="memoryMin" stroke="#43A047" strokeDasharray="5 5" name="Memory Min" />
-          <Line yAxisId="right" type="monotone" dataKey="memoryMax" stroke="#2E7D32" name="Memory Max" />
-          <Line yAxisId="right" type="monotone" dataKey="memorySaturation" stroke="#FF9800" strokeDasharray="3 3" name="Memory Saturation" />
-        </LineChart>
-      </CardContent>
-    </Card>
             </Paper>
                </>
               ))}

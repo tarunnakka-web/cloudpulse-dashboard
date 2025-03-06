@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNotification } from "../../context/NotificationContext";
 import { 
-  Card, CardContent, Typography, Grid, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button 
+  Card, CardContent, Typography, Grid, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button, Container
 } from "@mui/material";
 
 const NotificationHistory = () => {
@@ -27,14 +27,14 @@ const NotificationHistory = () => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ mt: 2 }}>
+    <Container sx={{ mt: 3 }}>
       <Typography fontWeight={"bold"} variant="h5" sx={{ color: "gray", m: 2 }}>
           Notifications
         </Typography>
       {notificationHistory.length > 0 ? (
         notificationHistory.map((notification, index) => (
           <Grid item xs={12} key={index}>
-            <Card sx={{ width: "100%", cursor: "pointer" }} onClick={() => handleOpenDetails(notification)}>
+            <Card sx={{ cursor: "pointer", border:"1px solid #aaaaaa", mb:2}} onClick={() => handleOpenDetails(notification)}>
               <CardContent>
                 <Chip 
                   label={notification.label || "Info"} 
@@ -96,7 +96,7 @@ const NotificationHistory = () => {
           </DialogActions>
         </Dialog>
       )}
-    </Grid>
+    </Container>
   );
 };
 
